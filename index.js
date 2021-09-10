@@ -37,7 +37,7 @@ app.post("/CreateAndSave", async (req, res) => {
   }
 });
 
-app.post ("/createMany", async (req,res)=> {
+app.post ("/createMany", async (req,res,done)=> {
 try {
     const {name, age, favoriteFoods } = req.body;
 
@@ -61,7 +61,7 @@ app.get ("/findByID", async(req,res) => {
 })
 
 
-app.get ("/findByName", async(req,res) => {
+app.get ("/findByName", async(req,res,done) => {
 
 await findContactByName (name, done) 
     Contact.find({"name":name},(err,data)=>{
@@ -72,7 +72,7 @@ await findContactByName (name, done)
 
 })
 
-app.get ("/findOneByFood", async(req,res)=>{
+app.get ("/findOneByFood", async(req,res,done)=>{
 
 const contact = await    Contact.find({favoriteFoods:food},(err,data)=>{
     //  console.log(food);
@@ -101,13 +101,13 @@ const contact = await Contact.findById(contactId, function(err, data) {
 })
 
 
-app.delete("/emoveById,", async (req,res)=>{
+app.delete("/emoveById,", async (req,res,done)=>{
 
     const contact = await Contact.findByIdAndRemove(contactId, (err, data) => err ? done(err) : done(null, data));
 
 })
 
-app.delete("/removeMany",async(req,res)=>{
+app.delete("/removeMany",async(req,res,done)=>{
     Contact.deleteMany({name: nameToRemove}, function(err, data) {
         if (err) {
           done(err);
@@ -119,7 +119,7 @@ app.delete("/removeMany",async(req,res)=>{
 
 })
 
-app.get("/queryCain", async(req,res)=>{
+app.get("/queryCain", async(req,res,done)=>{
     Contact.find({favoriteFoods:foodToSearch}).sort({name : "desc"}).limit(2).select("-age").exec((err, data) => {
         if(err)
           done(err);
